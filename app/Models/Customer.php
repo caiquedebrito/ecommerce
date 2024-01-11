@@ -8,9 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Customer extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $table = 'customer';
+    protected $primaryKey = 'cpf';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +23,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'cpf',
         'name',
+        'last_name',
         'email',
         'password',
+        'phone',
+        'birth_date',
     ];
 
     /**
