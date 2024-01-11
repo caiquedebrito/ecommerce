@@ -6,9 +6,9 @@ export default function Header() {
       <span className="text-2xl text-gray-50">LancheExpresso</span>
 
       <div className="flex gap-3">
-        <NavLink>Home</NavLink>
-        <NavLink>Login</NavLink>
-        <NavLink>Cadastro</NavLink>
+        <NavLink href="/">Home</NavLink>
+        <NavLink href="/login">Login</NavLink>
+        <NavLink href="register">Cadastro</NavLink>
       </div>
     </header>
   )
