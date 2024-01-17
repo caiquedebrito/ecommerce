@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
             return Inertia::render('Admin/Index');
         })->name('admin.dashboard');   
         Route::get('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
+    });
+});
+
+// Products Routes
+Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
+    
+    Route::middleware('adminauth')->group(function () {
+        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/store', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::patch('/{product}/update', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy');
     });
 });
 
