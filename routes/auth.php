@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -10,6 +11,24 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    
+    Route::middleware('admin.guest')->group(function () {
+        Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('admin.login');
+        Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('admin.login.post');
+        Route::get('/register', [AdminAuthController::class, 'register'])->name('admin.register');
+        Route::post('/register', [AdminAuthController::class, 'store'])->name('admin.register');
+    });
+
+    Route::middleware('admin.auth')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('Admin/Index');
+        })->name('admin.index');   
+        Route::get('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
+    });
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])

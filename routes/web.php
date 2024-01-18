@@ -19,7 +19,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -27,30 +27,12 @@ Route::get('/', function () {
     ]);
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
-    Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('admin.login');
-    Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('admin.login.post');
-    Route::get('/register', [AdminAuthController::class, 'register'])->name('admin.register');
-    Route::post('/register', [AdminAuthController::class, 'store'])->name('admin.register');
-
-    Route::get('/', function () {
-        return Inertia::render('Admin/Index');
-    })->name('admin.dashboard')->middleware('adminauth');
-
-    Route::middleware('adminauth')->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('Admin/Index');
-        })->name('admin.dashboard');   
-        Route::get('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
-    });
-});
-
 // Products Routes
 Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
     Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
     
-    Route::middleware('adminauth')->group(function () {
+    Route::middleware('admin.auth')->group(function () {
         Route::get('/create', [ProductController::class, 'create'])->name('products.create');
         Route::post('/store', [ProductController::class, 'store'])->name('products.store');
         Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
