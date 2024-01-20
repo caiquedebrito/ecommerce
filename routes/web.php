@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -33,17 +33,28 @@ Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
     Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
     
     Route::middleware('admin.auth')->group(function () {
-        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+        // Route::get('/create', [ProductController::class, 'create'])->name('products.create');
         Route::post('/store', [ProductController::class, 'store'])->name('products.store');
-        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        // Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::patch('/{product}/update', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy');
     });
 });
 
-// Route::get('/admin', function () {
-//     return Inertia::render('Admin');
-// })->middleware(['auth', 'verified'])->name('admin');
+// Categories Routes
+Route::group(['prefix' => 'categories', 'namespace' => 'Categories'], function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/{category}', [CategoryController::class, 'show'])->name('categories.show');
+    
+    Route::middleware('admin.auth')->group(function () {
+        // Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/store', [CategoryController::class, 'store'])->name('categories.store');
+        // Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+        Route::patch('/{category}/update', [CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/{category}/destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    });
+});
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
