@@ -1,4 +1,6 @@
+import axios from "axios";
 import ApplicationLogo from "../ApplicationLogo";
+import NavLink from "../NavLink";
 import PrimaryButton from "../PrimaryButton";
 
 
@@ -8,9 +10,12 @@ export default function Header() {
       <div className="w-full flex justify-between">
         <ApplicationLogo />
         <div className="flex items-center gap-5">
-          <PrimaryButton onClick={route("admin.logout")}>
+          {/* <PrimaryButton onClick={() => axios.get(route("admin.logout"))}>
             Log out
-          </PrimaryButton>
+          </PrimaryButton> */}
+          <NavLink href={route("admin.logout")}>
+            Sair
+          </NavLink>
         </div>
       </div>
     </header>

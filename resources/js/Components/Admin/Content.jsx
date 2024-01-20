@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Content({ data }) {
+export default function Content({ data, setSelected }) {
     return (
         <div className="bg-gray-100 px-5 mx-5 overflow-scroll">
             <table className="w-full overflow-scroll">
@@ -15,7 +15,7 @@ export default function Content({ data }) {
                 </thead>
                 <tbody className="text-center">
                     {data.map((item, index) => (
-                        <tr key={index}>
+                        <tr onClick={() => {console.log(item); setSelected(item)}} className="cursor-pointer hover:bg-gray-500" key={index}>
                             {Object.values(item).map((value, index) => (
                                 <td key={index}>{value}</td>
                             ))}
