@@ -27,12 +27,14 @@ export default function Login() {
     };
 
     return (
-        <GuestLayout>
+        <main className="min-h-screen min-w-full flex flex-col justify-center items-center">
             <Head title="Admin | Log in" />
 
             {/* {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>} */}
 
-            <form onSubmit={submit}>
+            <h1 className="text-xl font-bold mb-5">Admin | Login</h1>
+
+            <form onSubmit={submit} className="border border-blue-500 p-5 rounded-md">
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
@@ -66,7 +68,7 @@ export default function Login() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="block mt-4">
+                {/* <div className="block mt-4">
                     <label className="flex items-center">
                         <Checkbox
                             name="remember"
@@ -75,9 +77,9 @@ export default function Login() {
                         />
                         <span className="ms-2 text-sm text-gray-600">Lembrar</span>
                     </label>
-                </div>
+                </div> */}
 
-                <div className="flex items-center justify-end mt-4">
+                {/* <div className="flex items-center justify-end mt-4"> */}
                     {/* {canResetPassword && (
                         <Link
                             href={route('password.request')}
@@ -87,11 +89,11 @@ export default function Login() {
                         </Link>
                     )} */}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                    <PrimaryButton className="w-full mt-4" disabled={processing}>
+                        Entrar
                     </PrimaryButton>
-                </div>
+                {/* </div> */}
             </form>
-        </GuestLayout>
+        </main>
     );
 }
