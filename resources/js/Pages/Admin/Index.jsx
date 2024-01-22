@@ -1,41 +1,51 @@
 import Content from "@/Components/Admin/Content";
 import Header from "@/Components/Admin/Header";
 import Modal from "@/Components/Modal";
-import NavLink from "@/Components/NavLink";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { useForm } from "@inertiajs/react";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import ProductForm from "./ProductForm";
+import CategoryForm from "./CategoryForm";
 
-
+const options = {
+    "Produtos": (product, setModal, setRefresh) => <ProductForm product={product} setModal={setModal} setRefresh={setRefresh}/>,
+    "Categorias": (category, setModal, setRefresh) => <CategoryForm category={category} setModal={setModal} setRefresh={setRefresh}/>, 
+}
 
 export default function Admin() {
     const [modal, setModal] = useState(false);
-    const [products, setProducts] = useState([]);
-    const { data, setData, post, reset } = useForm({
-        name: "",
-        description: "",
-        price: 0,
-        category: "",
-    })
-
+    
     const [option, setOption] = useState("Produtos")
 
+    const [data, setData] = useState([]);
+
+    const [selected, setSelected] = useState(null)
+
+    const [loading, setLoading] = useState(true)
+
+    const [refresh, setRefresh] = useState(false)
+    const [path, setPath] = useState("/products")
+
+    useEffect(() => { 
+        if (selected) {
+            setModal(true)
+        }
+    }, [selected])
+
     useEffect(() => {
-        reset(["name", "description", "price", "category"])
-        axios.get("/products")
+        fetchData()
+    }, [path])
+
+    const fetchData = () => {
+        axios.get(path)
             .then(response => {
-                setProducts(response.data)
+                setData(response.data)
             })
             .catch(error => {
                 console.log(error)
             })
-    }, [])
-
-    const createProduct = (e) => {
-        e.preventDefault();
-
-        post(route("products.store"));
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     return (
@@ -43,47 +53,39 @@ export default function Admin() {
             <Header />
 
             <nav className="flex justify-center py-5 gap-5">
-                <NavLink onClick={() => setOption("Produtos")} className="text-black">
+                <a onClick={() => { setOption("Produtos"); setPath("/products")}} className="text-black cursor-pointer">
                     Produtos
-                </NavLink>
-                <NavLink onClick={() => setOption("Categorias")} className="text-black">
+                </a>
+                <a onClick={() => {setOption("Categorias"); setPath("/categories")}} className="text-black cursor-pointer">
                     Categorias
-                </NavLink>
-                <NavLink onClick={() => setOption("Pedidos")} className="text-black">
+                </a>
+                <a onClick={() => {setOption("Pedidos"); setData([])}} className="text-black cursor-pointer">
                     Pedidos
-                </NavLink>
-                <NavLink onClick={() => setOption("Clientes")} className="text-black">
+                </a>
+                <a onClick={() => {setOption("Clientes"); setData([])}} className="text-black cursor-pointer">
                     Clientes
-                </NavLink>
+                </a>
             </nav>
 
             <div className="flex justify-between px-5 mb-5">
                 <h2 className="text-xl">{ option }</h2>
                 <PrimaryButton
                     className="bg-orange-500 text-white py-2 px-4"
-                    onClick={() => setModal(true)}
+                    onClick={() => { setSelected({}); setModal(true)}}
                 >
                     Novo
                 </PrimaryButton>
             </div>
 
-            <Content data={products}/>
+            { loading ? <p className="text-xl font-bold">Carregando...</p> : <Content fetchData={fetchData} data={data} setSelected={setSelected} refresh={refresh}/> }
             
             <Modal show={modal} onClose={() => setModal(false)}>
                 <div className="flex justify-center flex-col items-center relative min-w-full h-screen  bg-gray-200">
-                        <h1 className="text-2xl text-">Novo Produto</h1>
-                        <form className="flex flex-col justify-center w-96 h-96" onSubmit={createProduct}>
-                            <label>Nome</label>
-                            <input type="text" value={data.name} onChange={e => setData("name", e.target.value)}/>
-                            <label>Descrição</label>
-                            <textarea value={data.description} onChange={e => setData("description", e.target.value)}></textarea>
-                            <label>Preço</label>
-                            <input type="number" value={data.price} onChange={e => setData("price", e.target.value)}/>
-                            <label>Categoria</label>
-                            <input type="text" value={data.category} onChange={e => setData("category", e.target.value)}/>
-                            <PrimaryButton type="submit">Salvar</PrimaryButton>
-                        </form>
-                    </div>
+                    <h1 className="text-2xl text-">Novo(a)</h1>
+                    {
+                        options[option] ? options[option](selected, setModal, setRefresh) : null
+                    }
+                </div>
             </Modal>
         </main>
     );
