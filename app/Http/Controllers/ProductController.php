@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,15 +25,21 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'categories' => 'required|array',
+            'categories.*' => 'string|max:255|exists:categories,name',
         ]);
 
-        Product::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-            'category' => $request->category,
-        ]);
+        $product = new Product;
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->save();
+
+        $categoryNames = $request->categories;
+        $categories = Category::whereIn('name', $categoryNames)->get();
+        $categoryIds = $categories->pluck('id');
+    
+        $product->categories()->attach($categoryIds);
 
         redirect('/admin');
     }
@@ -49,10 +56,17 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'categories' => 'required|array',
+            'categories.*' => 'string|max:255|exists:categories,name',
         ]);
-
+    
         $product->update($validated);
+    
+        $categoryNames = $request->categories; // Este é um array de nomes de categoria
+        $categories = Category::whereIn('name', $categoryNames)->get();
+        $categoryIds = $categories->pluck('id');
+    
+        $product->categories()->sync($categoryIds);
 
         return redirect(route('admin.index'));
     }
