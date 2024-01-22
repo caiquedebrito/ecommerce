@@ -34,10 +34,10 @@ export default function Register() {
         <GuestLayout>
             <Head title="Criar Cadastro" />
 
-            <div className="mb-5">
+            <div className="my-40">
                 <h1 className="text-4xl text-center mb-5">Criar cadastro</h1>
 
-                <form onSubmit={submit}>
+                <form onSubmit={submit} className="flex flex-col gap-3">
                     <div className="flex gap-3">
                         <div>
                             <InputLabel htmlFor="name" value="Nome" />
@@ -227,16 +227,17 @@ export default function Register() {
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col justify-center items-center mt-4">
+                    <div className="flex flex-col justify-center items-center mt-4 gap-2">
                         <PrimaryButton className="ms-4 w-80 text-center" disabled={processing}>
                             Continuar
                         </PrimaryButton>
-                        <Link
+                        <span>Já tem conta? <Link
                             href={route("login")}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Já tem conta? Faça login
-                        </Link>
+                            Faça login
+                        </Link></span>
+                        
                     </div>
                 </form>
             </div>

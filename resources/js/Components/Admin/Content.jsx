@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import "./style.css"
 
-export default function Content({ data, setSelected }) {
+export default function Content({ data, setSelected, refresh, fetchData }) {
+
+    useEffect(() => {
+        fetchData()
+    }, [refresh])
+
     return (
-        <div className="bg-gray-100 px-5 mx-5 overflow-scroll">
-            <table className="w-full overflow-scroll">
+        <div className="bg-gray-100 overflow-scroll w-full no-scrollbar">
+            <table className="max-w-[1026px] min-w-[600px] overflow-scroll mx-auto">
                 <thead className="text-center">
                     <tr>
                         {data.length > 0

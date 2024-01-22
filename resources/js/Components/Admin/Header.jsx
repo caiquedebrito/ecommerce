@@ -9,7 +9,7 @@ export default function Header() {
     <header className="w-full bg-blue-600 flex flex-col py-6  px-12">
       <div className="w-full flex justify-between">
         <ApplicationLogo />
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 bg-orange-500 text-white px-5 py-2 rounded">
           {/* <PrimaryButton onClick={() => axios.get(route("admin.logout"))}>
             Log out
           </PrimaryButton> */}

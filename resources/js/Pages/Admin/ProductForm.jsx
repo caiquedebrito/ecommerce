@@ -1,32 +1,46 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-export default function ProductForm({ product }) {
+export default function ProductForm({ product, setModal, setRefresh }) {
     const { data, setData, post, patch, delete: destroy } = useForm({
         name: product.name || "",
         description: product.description || "",
         price: product.price || "",
-        category: product.category || "",
+        categories: product.categories || [],
     });
+
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        axios.get('/categories')
+            .then(response => {
+                setCategories(response.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [])
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
 
         if (product.id) {
             patch(route("products.update", product.id));
-            console.log("Produto atualizado")
             
         } else {
             post(route("products.store"));
-            console.log("Produto criado")
         }
 
+        setModal(false)
+        setRefresh(true)
     };
 
     const deleteProduct = () => {
-        console.log("Produto apagado")
         destroy(route("products.destroy", product.id));
+        setModal(false)
+        setRefresh(true)
     }
 
     return (
@@ -55,12 +69,19 @@ export default function ProductForm({ product }) {
                 required
             />
             <label>Categoria</label>
-            <input
-                type="text"
-                value={data.category}
-                onChange={(e) => setData("category", e.target.value)}
-                required
-            />
+            
+            <select required multiple  value={data.categories} onChange={e => {
+                if (data.categories.includes(e.target.value)) {
+                    setData("categories", data.categories.filter(category => category !== e.target.value))
+                    return
+                }
+
+                setData("categories", [...data.categories, e.target.value])
+            }}>
+                {categories.map(category => (
+                    <option key={category.id} value={category.name}>{category.name}</option>
+                ))}
+            </select>
             <PrimaryButton type="submit" className="mt-5">Salvar</PrimaryButton>
             { product.id ? <PrimaryButton className="mt-5" onClick={deleteProduct} type="button">Apagar</PrimaryButton> : null  }
         </form>

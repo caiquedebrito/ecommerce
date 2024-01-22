@@ -2,7 +2,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
 import React from "react";
 
-export default function CategoryForm({ category }) {
+export default function CategoryForm({ category, setModal, setRefresh }) {
   const { post, patch, delete: destroy, data, setData } = useForm({
     name: category.name || "",
   })
@@ -12,16 +12,18 @@ export default function CategoryForm({ category }) {
 
     if (category.id) {
         patch(route("categories.update", category.id));
-        console.log("Categoria atualizada")
     } else {
         post(route("categories.store"));
-        console.log("Categoria criada")
     }
+
+    setModal(false)
+    setRefresh(true)
   }
 
   const deleteCategory = () => {
     destroy(route("categories.destroy", id));
-    console.log("Categoria apagada")
+    setModal(false) 
+    setRefresh(true)
   }
 
     return (

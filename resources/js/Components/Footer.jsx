@@ -3,7 +3,7 @@ import ApplicationLogo from './ApplicationLogo'
 
 export default function Footer() {
   return (
-    <footer className="bg-blue-600 text-white p-10">
+    <footer className="bg-blue-600 text-white p-10 w-full">
       <div>
         <ApplicationLogo />
 

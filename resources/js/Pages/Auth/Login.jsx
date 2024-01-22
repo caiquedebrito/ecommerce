@@ -39,7 +39,7 @@ export default function Login({ status, canResetPassword }) {
             )}
 
             <div className="mt-10">
-                <h1 className="text-center font-bold text-xl">Faça login</h1>
+                <h1 className="text-center font-bold text-xl mb-10">Faça login</h1>
                 <form
                     onSubmit={submit}
                     className="border border-blue-500 p-5 rounded-md"
@@ -107,9 +107,16 @@ export default function Login({ status, canResetPassword }) {
                             </Link>
                         )}
 
-                        <PrimaryButton className="ms-4 w-full" disabled={processing}>
+                        <PrimaryButton className="ms-4 w-full mb-2" disabled={processing}>
                             Login
                         </PrimaryButton>
+
+                        <span>Já tem conta? <Link
+                            href={route("login")}
+                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Faça seu cadastrado
+                        </Link></span>
                     </div>
                 </form>
             </div>
