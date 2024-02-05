@@ -5,18 +5,17 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import ProductCard from '@/Components/ProductCard';
 import Footer from '@/Components/Footer';
 
-export default function Home({ auth, laravelVersion, phpVersion }) {
+export default function Home({ auth, laravelVersion, phpVersion }) {    
     return (
-        <main className="min-h-screen">
+        <main className="min-h-screen flex flex-col justify-between">
             <Head title="Home" />
-            <Header />
+            <Header auth={auth}/>
 
             <div className="p-5 flex flex-wrap gap-2 justify-center"> 
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
-
             </div>
 
             <Footer />

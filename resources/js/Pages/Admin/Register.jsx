@@ -27,14 +27,13 @@ export default function Register() {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Criar Cadastro" />
+        
 
-            <div className="mb-5">
+            <main className="min-h-screen min-w-full flex flex-col justify-center items-center">
                 <h1 className="text-4xl text-center mb-5">Criar cadastro</h1>
 
-                <form onSubmit={submit}>
-                    <div className="flex gap-3">
+                <form onSubmit={submit} className="flex flex-col gap-2">
+                    
                         <div>
                             <InputLabel htmlFor="name" value="Nome" />
 
@@ -57,11 +56,10 @@ export default function Register() {
                             />
                         </div>
                         
-                    </div>
 
                     
 
-                    <div className="flex gap-3">
+                    
                         <div>
                             <InputLabel htmlFor="email" value="Email" />
 
@@ -84,9 +82,8 @@ export default function Register() {
                             />
                         </div>
                         
-                    </div>
 
-                    <div className="flex gap-3">
+                    
                         <div>
                             <InputLabel htmlFor="password" value="Senha" />
 
@@ -136,7 +133,6 @@ export default function Register() {
                                 className="mt-2"
                             />
                         </div>
-                    </div>
                     <div className="flex flex-col justify-center items-center mt-4">
                         <PrimaryButton className="ms-4 w-80 text-center" disabled={processing}>
                             Continuar
@@ -149,7 +145,6 @@ export default function Register() {
                         </Link> */}
                     </div>
                 </form>
-            </div>
-        </GuestLayout>
+            </main>
     );
 }

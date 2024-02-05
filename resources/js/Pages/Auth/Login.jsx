@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import Header from "@/Components/Header";
+import Footer from "@/Components/Footer";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,7 +29,7 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <main className="min-h-screen min-w-full flex flex-col items-center">
+        <main className="min-h-screen min-w-full flex flex-col items-center justify-between">
             <Head title="Log in" />
             <Header />
 
@@ -120,6 +121,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
                 </form>
             </div>
+            <Footer />
         </main>
     );
 }
