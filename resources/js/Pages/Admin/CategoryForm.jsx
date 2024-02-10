@@ -21,7 +21,7 @@ export default function CategoryForm({ category, setModal, setRefresh }) {
   }
 
   const deleteCategory = () => {
-    destroy(route("categories.destroy", id));
+    destroy(route("categories.destroy", category.id));
     setModal(false) 
     setRefresh(true)
   }
