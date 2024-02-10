@@ -1,4 +1,7 @@
+import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -9,6 +12,7 @@ export default function ProductForm({ product, setModal, setRefresh }) {
         description: product.description || "",
         price: product.price || "",
         categories: product.categories || [],
+        thumbnail: null,
     });
 
     const [categories, setCategories] = useState([])
@@ -45,7 +49,7 @@ export default function ProductForm({ product, setModal, setRefresh }) {
 
     return (
         <form
-            className="flex flex-col justify-center w-96 h-96"
+            className="flex flex-col "
             onSubmit={handleOnSubmit}
         >
             <label>Nome</label>
@@ -55,22 +59,26 @@ export default function ProductForm({ product, setModal, setRefresh }) {
                 onChange={(e) => setData("name", e.target.value)}
                 required
             />
-            <label>Descrição</label>
+            <InputLabel>Descrição</InputLabel>
             <textarea
                 value={data.description}
                 onChange={(e) => setData("description", e.target.value)}
                 required
             ></textarea>
-            <label>Preço</label>
+            <InputLabel>Preço</InputLabel>
             <input
                 type="number"
                 value={data.price}
                 onChange={(e) => setData("price", e.target.value)}
                 required
             />
+
+            <InputLabel>Capa</InputLabel>
+            <input type="file" name="thumbnail" onChange={(e) => setData("thumbnail", e.target.files[0])}/>
+
             <label>Categoria</label>
             
-            <select required multiple  value={data.categories} onChange={e => {
+            <select className="no-scroll" required multiple  value={data.categories} onChange={e => {
                 if (data.categories.includes(e.target.value)) {
                     setData("categories", data.categories.filter(category => category !== e.target.value))
                     return
@@ -84,6 +92,7 @@ export default function ProductForm({ product, setModal, setRefresh }) {
             </select>
             <PrimaryButton type="submit" className="mt-5">Salvar</PrimaryButton>
             { product.id ? <PrimaryButton className="mt-5" onClick={deleteProduct} type="button">Apagar</PrimaryButton> : null  }
+            <SecondaryButton className="mt-5" onClick={() => setModal(false)}>Cancelar</SecondaryButton>
         </form>
     );
 }

@@ -21,18 +21,26 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $request->validate([
+        
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string|max:255',
             'categories' => 'required|array',
             'categories.*' => 'string|max:255|exists:categories,name',
+            'thumbnail' => 'required|image'
         ]);
+
+        if ($request->hasFile('thumbnail')) {
+          $imagePath = $request->file('thumbnail')->store('product', 'public');
+          $validated['thumbnail'] = asset('storage/' . $imagePath);
+        }
 
         $product = new Product;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
+        $product->thumbnail = $validated['thumbnail'];
         $product->save();
 
         $categoryNames = $request->categories;
