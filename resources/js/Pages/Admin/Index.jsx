@@ -80,7 +80,7 @@ export default function Admin() {
             { loading ? <p className="text-xl font-bold">Carregando...</p> : <Content fetchData={fetchData} data={data} setSelected={setSelected} refresh={refresh}/> }
             
             <Modal show={modal} onClose={() => setModal(false)}>
-                <div className="flex justify-center flex-col items-center relative min-w-full h-screen  bg-gray-200">
+                <div className="flex justify-center flex-col items-center relative min-w-full h-screen  bg-gray-200 p-6">
                     <h1 className="text-2xl text-">Novo(a)</h1>
                     {
                         options[option] ? options[option](selected, setModal, setRefresh) : null

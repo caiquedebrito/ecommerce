@@ -7,22 +7,22 @@ export default function Content({ data, setSelected, refresh, fetchData }) {
     }, [refresh])
 
     return (
-        <div className="bg-gray-100 overflow-scroll w-full no-scrollbar">
-            <table className="max-w-[1026px] min-w-[600px] overflow-scroll mx-auto">
-                <thead className="text-center">
+        <div className="overflow-scroll mx-4 no-scroll border">
+            <table className="w-full">
+                <thead className="bg-blue-500 text-white">
                     <tr>
                         {data.length > 0
                             ? Object.keys(data[0]).map((key, index) => (
-                                  <th key={index}>{key}</th>
+                                  <th key={index} className="px-6 py-3">{key}</th>
                               ))
                             : null}
                     </tr>
                 </thead>
-                <tbody className="text-center">
+                <tbody>
                     {data.map((item, index) => (
-                        <tr onClick={() => {console.log(item); setSelected(item)}} className="cursor-pointer hover:bg-gray-500" key={index}>
+                        <tr onClick={() => {setSelected(item)}} key={index}>
                             {Object.values(item).map((value, index) => (
-                                <td key={index}>{value}</td>
+                                <td key={index} className="px-6 py-3">{value}</td>
                             ))}
                         </tr>
                     ))}

@@ -112,8 +112,8 @@ export default function Login({ status, canResetPassword }) {
                             Login
                         </PrimaryButton>
 
-                        <span>Já tem conta? <Link
-                            href={route("login")}
+                        <span>Não tem conta? <Link
+                            href={route("register")}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Faça seu cadastrado
