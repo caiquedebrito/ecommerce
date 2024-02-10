@@ -27,6 +27,14 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/sobre', function () {
+    return Inertia::render('About');
+})->name('about');
+
+Route::get('/contato', function () {
+    return Inertia::render('Contact');
+})->name('contact');
+
 // Products Routes
 Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
