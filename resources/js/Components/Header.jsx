@@ -6,6 +6,7 @@ import AccountButton from "./AccountButton";
 import Dropdown from "./Dropdown";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SearchInput from "./SearchInput";
 
 export default function Header({auth}) {
   const [categories, setCategories] = useState([])
@@ -20,7 +21,8 @@ export default function Header({auth}) {
     <header className="w-full bg-blue-600 flex flex-col pt-6  px-12">
       <div className="w-full flex justify-between">
         <ApplicationLogo />
-        <TextInput placeholder="Digite o que você procura..." type="search"/>
+        
+        <SearchInput />
 
         <div className="flex items-center gap-5">
           {

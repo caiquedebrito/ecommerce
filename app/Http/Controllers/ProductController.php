@@ -95,4 +95,15 @@ class ProductController extends Controller
 
         return redirect(route('admin.index'));
     }
+
+    public function search(Request $request) {
+        $search = $request->input('q');
+
+        $products = Product::where('name', 'like', "%$search%")->get();
+        // dd($products);
+
+        return Inertia::render('Search', [
+            'products' => $products
+        ]);
+    }
 }

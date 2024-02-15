@@ -38,7 +38,9 @@ Route::get('/contato', function () {
 // Products Routes
 Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/search', [ProductController::class, 'search'])->name('products.search');
     Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
+
     
     Route::middleware('admin.auth')->group(function () {
         // Route::get('/create', [ProductController::class, 'create'])->name('products.create');
