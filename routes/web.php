@@ -63,6 +63,9 @@ Route::group(['prefix' => 'categories', 'namespace' => 'Categories'], function (
     });
 });
 
+Route::get('/carrinho', function () {
+    return Inertia::render('ShoppingCart');
+})->name('carrinho');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

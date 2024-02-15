@@ -4,10 +4,18 @@ import ShoppingCart from "../assets/shopping-cart.svg";
 import ApplicationLogo from "./ApplicationLogo";
 import AccountButton from "./AccountButton";
 import Dropdown from "./Dropdown";
-
-const categories = ['Categoria 1', 'Categoria 1', 'Categoria 1',]
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Header({auth}) {
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    axios.get("/categories")
+      .then(response => setCategories(response.data))
+      .catch(error => console.error(error))
+  }, [])
+
   return (
     <header className="w-full bg-blue-600 flex flex-col pt-6  px-12">
       <div className="w-full flex justify-between">
@@ -20,7 +28,7 @@ export default function Header({auth}) {
             Login
           </NavLink> ou <NavLink href="/register">Cadastre-se</NavLink></span>
           }
-          <NavLink>
+          <NavLink href="/carrinho">
             <img src={ShoppingCart} alt="Carrinho de compras" />
           </NavLink>
         </div>
@@ -34,11 +42,11 @@ export default function Header({auth}) {
           </Dropdown.Trigger>
           <Dropdown.Content>
             {
-              categories.map(category => <Dropdown.Link>{category}</Dropdown.Link>)
+              categories.map(category => <Dropdown.Link key={category.id}>{category.name}</Dropdown.Link>)
             }
           </Dropdown.Content>
         </Dropdown>
-        <NavLink href="/sobre-nos">Sobre nós</NavLink>
+        <NavLink href="/sobre">Sobre nós</NavLink>
         <NavLink href="/contato">Contato</NavLink>
       </nav>
     </header>
