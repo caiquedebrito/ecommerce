@@ -1,7 +1,5 @@
 import Header from '@/Components/Header';
-import { Link, Head } from '@inertiajs/react';
-import Bolo from "../assets/bolo.jpg"
-import PrimaryButton from '@/Components/PrimaryButton';
+import { Head } from '@inertiajs/react';
 import ProductCard from '@/Components/ProductCard';
 import Footer from '@/Components/Footer';
 import { useEffect, useState } from 'react';

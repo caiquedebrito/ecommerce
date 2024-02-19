@@ -6,6 +6,9 @@ import TextInput from '@/Components/TextInput'
 import { Head } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
+import facebook from '../assets/facebook.svg'
+import instagram from '../assets/instagram.svg'
+import youtube from '../assets/youtube.svg'
 
 export default function Contact() {
   const [data, setData] = useState({
@@ -40,14 +43,15 @@ export default function Contact() {
   }
 
   return (
-    <div className='flex flex-col justify-between min-h-screen items-center'>
+    <div className='flex flex-col justify-between min-h-screen items-center gap-10'>
       <Head title="Contatos" />
       <Header />
       <div>
-        <h1 className=''>Contatos</h1>
+        <h1 className='text-xl font-bold mb-5'>Contatos</h1>
 
         <div>
           <form  className='flex flex-col gap-5' onSubmit={handleSubmit}>
+            <h2 className='text-md'>Envie-nos uma mensagem:</h2>
             <div>
             <InputLabel>Nome</InputLabel>
             <TextInput className="w-full" name="name" value={data.name} onChange={handleChange} required/>
@@ -67,6 +71,23 @@ export default function Contact() {
               Enviar
             </PrimaryButton>
           </form>
+        </div>
+
+        <div className='my-5'>
+          <h2>Siga-nos em nossas redes sociais:</h2>
+          <div className='bg-blue-600 p-5 flex justify-between rounded-md'>
+            <a href="">
+              <img src={facebook} alt="Facebook" />
+            </a>
+            <a href="">
+              <img src={instagram} alt="Instagram" />
+            </a>
+            <a href="">
+              <img src={youtube} alt="Youtube" />
+            </a>
+          </div>
+
+          <p className='mt-5'>Email: lancheepxresso@gmail.com</p>
         </div>
       </div>
       <Footer />

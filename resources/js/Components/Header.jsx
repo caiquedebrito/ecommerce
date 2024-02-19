@@ -43,7 +43,7 @@ export default function Header({auth}) {
         <NavLink href="/">Início</NavLink>
         <Dropdown>
           <Dropdown.Trigger>
-            <span>Categorias</span>
+            <span className="text-white">Categorias</span>
           </Dropdown.Trigger>
           <Dropdown.Content>
             {
