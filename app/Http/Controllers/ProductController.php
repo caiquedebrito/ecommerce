@@ -15,8 +15,26 @@ class ProductController extends Controller
      */
     public function index() {
         $products = Product::all();
+
         return response()->json($products);
     }
+
+    public function home() {
+        $products = Product::with('categories')->get();
+
+        $productsByCategory = $products->groupBy(function ($product) {
+            return $product->categories->first()->name;
+        });
+    
+        // Limit each group to 5 products
+        foreach ($productsByCategory as $category => $products) {
+            $productsByCategory[$category] = $products->take(5);
+        }
+    
+        return response()->json($productsByCategory);
+    }
+
+    
 
     public function show(string $id) {
         $product = Product::where("id", $id)->first();

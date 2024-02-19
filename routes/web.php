@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -21,11 +22,9 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'canRegister' => Route::has('register')
     ]);
-});
+})->name('home');
 
 Route::get('/sobre', function () {
     return Inertia::render('About');
@@ -38,14 +37,13 @@ Route::get('/contato', function () {
 // Products Routes
 Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/home', [ProductController::class, 'home'])->name('products.home');
     Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+    Route::get('/serach-by-category', [ProductController::class, 'searchByCategory'])->name('products.searchByCategory');
     Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
-
     
     Route::middleware('admin.auth')->group(function () {
-        // Route::get('/create', [ProductController::class, 'create'])->name('products.create');
         Route::post('/store', [ProductController::class, 'store'])->name('products.store');
-        // Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::patch('/{product}/update', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy');
     });
@@ -57,9 +55,7 @@ Route::group(['prefix' => 'categories', 'namespace' => 'Categories'], function (
     Route::get('/{category}', [CategoryController::class, 'show'])->name('categories.show');
     
     Route::middleware('admin.auth')->group(function () {
-        // Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
         Route::post('/store', [CategoryController::class, 'store'])->name('categories.store');
-        // Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         Route::patch('/{category}/update', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/{category}/destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
     });
