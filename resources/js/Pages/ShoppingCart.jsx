@@ -1,5 +1,6 @@
 import Footer from '@/Components/Footer'
 import Header from '@/Components/Header'
+import NavLink from '@/Components/NavLink'
 import PrimaryButton from '@/Components/PrimaryButton'
 import React, { useEffect, useState } from 'react'
 
@@ -42,7 +43,7 @@ export default function ShoppingCart() {
       <Header />
       <div className='flex flex-col items-center py-10'>
         {
-          !!cart ? cart.map(item => (
+          !!cart ? (cart.map(item => (
             <div className='flex gap-4' key={item.id}>
               <img src={item.thumbnail} alt={item.name} className='w-32 h-32' />
               <div>
@@ -62,12 +63,13 @@ export default function ShoppingCart() {
                 <button onClick={() => handleDelete(item.id)} className='mt-4 bg-red-500 text-white px-4 py-2 rounded'>Deletar</button>
               </div>
             </div>
-          )) : (<>
+             
+          )) && <PrimaryButton className='mt-5'>Finalizar compra</PrimaryButton>) : (<>
             <p>Nenhum item no carrinho</p>
-            <PrimaryButton>Ir as compras</PrimaryButton>
+            <NavLink href={route("home")}>Ir as compras</NavLink>
           </>)
         }
-        <PrimaryButton className='mt-5'>Finalizar compra</PrimaryButton>
+       
       </div>
       <Footer />
     </div>

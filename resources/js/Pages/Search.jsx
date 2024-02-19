@@ -4,7 +4,6 @@ import ProductCard from '@/Components/ProductCard'
 import React from 'react'
 
 export default function Search({ products }) {
-    console.log(products)
   return (
     <div className='flex flex-col min-h-screen justify-between'>
         <Header />

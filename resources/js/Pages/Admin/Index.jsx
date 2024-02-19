@@ -33,7 +33,7 @@ export default function Admin() {
 
     useEffect(() => {
         fetchData()
-    }, [path])
+    }, [path, refresh])
 
     const fetchData = () => {
         axios.get(path)

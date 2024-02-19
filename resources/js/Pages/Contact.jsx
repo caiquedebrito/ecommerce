@@ -3,7 +3,7 @@ import Header from '@/Components/Header'
 import InputLabel from '@/Components/InputLabel'
 import PrimaryButton from '@/Components/PrimaryButton'
 import TextInput from '@/Components/TextInput'
-import { Head, useForm } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useState } from 'react'
 

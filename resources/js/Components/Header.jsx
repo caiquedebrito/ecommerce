@@ -1,5 +1,4 @@
 import NavLink from "./NavLink";
-import TextInput from "./TextInput";
 import ShoppingCart from "../assets/shopping-cart.svg";
 import ApplicationLogo from "./ApplicationLogo";
 import AccountButton from "./AccountButton";
@@ -16,6 +15,10 @@ export default function Header({auth}) {
       .then(response => setCategories(response.data))
       .catch(error => console.error(error))
   }, [])
+
+  const searchByCategory = (category) => {
+      window.location.href = `/products/search?c=${category}`;
+  }
 
   return (
     <header className="w-full bg-blue-600 flex flex-col pt-6  px-12">
@@ -36,7 +39,7 @@ export default function Header({auth}) {
         </div>
       </div>
 
-      <nav className="w-full flex justify-center gap-5 py-3 ">
+      <nav className="w-full flex justify-center gap-5 py-3 text-sm">
         <NavLink href="/">Início</NavLink>
         <Dropdown>
           <Dropdown.Trigger>
@@ -44,7 +47,7 @@ export default function Header({auth}) {
           </Dropdown.Trigger>
           <Dropdown.Content>
             {
-              categories.map(category => <Dropdown.Link key={category.id}>{category.name}</Dropdown.Link>)
+              categories.map(category => <Dropdown.Link key={category.id} onClick={() => {searchByCategory(category.name);}}>{category.name}</Dropdown.Link>)
             }
           </Dropdown.Content>
         </Dropdown>

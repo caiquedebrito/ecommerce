@@ -22,7 +22,7 @@ export default function Content({ data, setSelected, refresh, fetchData }) {
                     {data.map((item, index) => (
                         <tr onClick={() => {setSelected(item)}} key={index}>
                             {Object.values(item).map((value, index) => (
-                                <td key={index} className="px-6 py-3">{value}</td>
+                                <td key={index} className="px-6 py-3 text-center">{value}</td>
                             ))}
                         </tr>
                     ))}
