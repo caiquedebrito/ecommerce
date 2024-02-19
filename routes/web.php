@@ -27,12 +27,20 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/sobre', function () {
-    return Inertia::render('About');
+    return Inertia::render('About', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register')
+    ]);
 })->name('about');
 
 Route::get('/contato', function () {
-    return Inertia::render('Contact');
+    return Inertia::render('Contact',[
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register')
+    ]);
 })->name('contact');
+
+Route::post('/email', [MailController::class, 'send'])->name('email')->middleware('auth');
 
 // Products Routes
 Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
