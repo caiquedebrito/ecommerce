@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { CpfValido } from "@/utils/cpfValido";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -24,10 +25,23 @@ export default function Register() {
         };
     }, []);
 
+    const today = new Date();
+    const eighteenYearsAgo = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+    );
+
+    const maxDate = eighteenYearsAgo.toISOString().split('T')[0];
+
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("register"));
+        if (CpfValido(data.cpf)) {
+            post(route("register"));
+        }
+
+        alert("CPF inválido")
     };
 
     return (
@@ -46,7 +60,7 @@ export default function Register() {
                                 id="name"
                                 name="name"
                                 value={data.name}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="name"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -67,7 +81,7 @@ export default function Register() {
                                 id="last_name"
                                 name="last_name"
                                 value={data.last_name}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="last_name"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -91,13 +105,15 @@ export default function Register() {
                                 id="cpf"
                                 name="cpf"
                                 value={data.cpf}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="cpf"
                                 isFocused={true}
                                 onChange={(e) =>
                                     setData("cpf", e.target.value)
                                 }
                                 required
+                                pattern="^\d{3}\x2E\d{3}\x2E\d{3}\x2D\d{2}$"
+                                placeholder="000.000.000-00"
                             />
 
                             <InputError
@@ -116,13 +132,14 @@ export default function Register() {
                                 name="birth_date"
                                 type="date"
                                 value={data.birth_date}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="birth_date"
                                 isFocused={true}
                                 onChange={(e) =>
                                     setData("birth_date", e.target.value)
                                 }
                                 required
+                                max={maxDate} 
                             />
 
                             <InputError
@@ -134,19 +151,20 @@ export default function Register() {
 
                     <div className="flex gap-3">
                         <div>
-                            <InputLabel htmlFor="email" value="Email" />
+                            <InputLabel htmlFor="email" value="Email"/>
 
                             <TextInput
                                 id="email"
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="email"
                                 onChange={(e) =>
                                     setData("email", e.target.value)
                                 }
                                 required
+                                pattern="^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$"
                             />
 
                             <InputError
@@ -161,12 +179,14 @@ export default function Register() {
                                 id="phone"
                                 name="phone"
                                 value={data.phone}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="phone"
                                 onChange={(e) =>
                                     setData("phone", e.target.value)
                                 }
                                 required
+                                pattern="^\(?(?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\)? ?(?:[2-8]|9[0-9])[0-9]{3}\-?[0-9]{4}$"
+                                placeholder="00000000000"
                             />
 
                             <InputError
@@ -185,7 +205,7 @@ export default function Register() {
                                 type="password"
                                 name="password"
                                 value={data.password}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="password"
                                 onChange={(e) =>
                                     setData("password", e.target.value)
@@ -210,7 +230,7 @@ export default function Register() {
                                 type="password"
                                 name="password_confirmation"
                                 value={data.password_confirmation}
-                                className="mt-1 block w-full"
+                                className="mt-1 block"
                                 autoComplete="new-password"
                                 onChange={(e) =>
                                     setData(

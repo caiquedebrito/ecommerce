@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'cpf' => 'required|string|max:11|unique:'.Customer::class,
+            'cpf' => 'required|string|max:14|unique:'.Customer::class,
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.Customer::class,
