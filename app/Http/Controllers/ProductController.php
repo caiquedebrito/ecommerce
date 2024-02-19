@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -91,9 +92,8 @@ class ProductController extends Controller
             'description' => 'required|string|max:255',
             'categories' => 'required|array',
             'categories.*' => 'string|max:255|exists:categories,name',
+            'thumbnail' => 'required|image'
         ]);
-    
-        $product->update($validated);
     
         $categoryNames = $request->categories;
         $categories = Category::whereIn('name', $categoryNames)->get();
@@ -115,13 +115,41 @@ class ProductController extends Controller
     }
 
     public function search(Request $request) {
-        $search = $request->input('q');
 
-        $products = Product::where('name', 'like', "%$search%")->get();
-        // dd($products);
+        if ($request->has('q')) {
+            $search = $request->input('q');
 
-        return Inertia::render('Search', [
-            'products' => $products
-        ]);
+            $products = Product::where('name', 'like', "%$search%")->get();
+
+            return Inertia::render('Search', [
+                'products' => $products
+            ]);
+        } 
+
+        if ($request->has('c')) {
+            $category = $request->input('c');
+
+            $products = Product::whereHas('categories', function($query) use ($category) {
+                $query->where('name', $category);
+            })->get();
+
+            return Inertia::render('Search', [
+                'products' => $products
+            ]);
+        }
+        
+    }
+
+    public function searchByCategory(Request $request) {
+        if ($request->has('q') && $request->has('c')) {
+            $quantity = $request->input('q');
+            $category = $request->input('c');
+
+            $products = Product::whereHas('categories', function($query) use ($category) {
+                $query->where('name', $category);
+            })->where('quantity', '>=', $quantity)->get();
+
+            return response()->json($products);
+        }
     }
 }
