@@ -10,7 +10,7 @@ import facebook from '../assets/facebook.svg'
 import instagram from '../assets/instagram.svg'
 import youtube from '../assets/youtube.svg'
 
-export default function Contact() {
+export default function Contact({ categories }) {
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -45,7 +45,7 @@ export default function Contact() {
   return (
     <div className='flex flex-col justify-between min-h-screen items-center gap-10'>
       <Head title="Contatos" />
-      <Header />
+      <Header categories={categories}/>
       <div>
         <h1 className='text-xl font-bold mb-5'>Contatos</h1>
 

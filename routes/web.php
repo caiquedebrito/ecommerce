@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminPagesController;
+use App\Http\Controllers\Admin\AdmiPagesController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WebController;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,26 +24,14 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register')
-    ]);
-})->name('home');
+Route::get('/', [WebController::class, 'home'])->name('home');
+Route::get('/sobre', [WebController::class, 'about'])->name('about');
+Route::get('/contato', [WebController::class, 'contact'])->name('contact');
 
-Route::get('/sobre', function () {
-    return Inertia::render('About', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register')
-    ]);
-})->name('about');
-
-Route::get('/contato', function () {
-    return Inertia::render('Contact',[
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register')
-    ]);
-})->name('contact');
+// Admin pages
+Route::get('/admin/produtos', [AdminPagesController::class, 'products'])->middleware('admin.auth')->name('admin.products');
+Route::get('/admin/produtos/criar', [AdminPagesController::class, 'createProduct'])->middleware('admin.auth')->name('admin.product.create');
+Route::get('/admin/produtos/{id}', [AdminPagesController::class, 'product'])->middleware('admin.auth')->name('admin.product');
 
 Route::post('/email', [MailController::class, 'send'])->name('email')->middleware('auth');
 

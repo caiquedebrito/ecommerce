@@ -4,10 +4,10 @@ import React from 'react';
 import Empresa from "../assets/primeira3.jpg"
 import Cultura from "../assets/segunda3.jpg"
 
-export default function About() {
+export default function About({ categories }) {
   return (
     <div>
-      <Header />
+      <Header categories={categories}/>
       <div>
       <img src={Empresa} alt="" style={{ maxWidth: '100%', width: '100vw' }} />
 

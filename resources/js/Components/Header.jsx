@@ -3,19 +3,11 @@ import ShoppingCart from "../assets/shopping-cart.svg";
 import ApplicationLogo from "./ApplicationLogo";
 import AccountButton from "./AccountButton";
 import Dropdown from "./Dropdown";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import SearchInput from "./SearchInput";
+import { Popover } from "@headlessui/react";
 
-export default function Header({auth}) {
-  const [categories, setCategories] = useState([])
-
-  useEffect(() => {
-    axios.get("/categories")
-      .then(response => setCategories(response.data))
-      .catch(error => console.error(error))
-  }, [])
-
+export default function Header({auth, categories }) {
+  
   const searchByCategory = (category) => {
       window.location.href = `/products/search?c=${category}`;
   }
@@ -41,7 +33,7 @@ export default function Header({auth}) {
 
       <nav className="w-full flex justify-center gap-5 py-3 text-sm">
         <NavLink href="/">Início</NavLink>
-        <Dropdown>
+        {/* <Dropdown>
           <Dropdown.Trigger>
             <span className="text-white">Categorias</span>
           </Dropdown.Trigger>
@@ -50,7 +42,14 @@ export default function Header({auth}) {
               categories.map(category => <Dropdown.Link key={category.id} onClick={() => {searchByCategory(category.name);}}>{category.name}</Dropdown.Link>)
             }
           </Dropdown.Content>
-        </Dropdown>
+        </Dropdown> */}
+        <div className='categories relative'>
+          <span className='text-white inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none'>Categorias</span>
+
+          {/* <div className="absolute bottom-0 categories-hover:text-black">
+            <NavLink>Categoria 1</NavLink>
+          </div> */}
+        </div>
         <NavLink href="/sobre">Sobre nós</NavLink>
         <NavLink href="/contato">Contato</NavLink>
       </nav>

@@ -35,8 +35,6 @@ class ProductController extends Controller
         return response()->json($productsByCategory);
     }
 
-    
-
     public function show(string $id) {
         $product = Product::where("id", $id)->first();
 
@@ -49,6 +47,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
+
         
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -77,7 +76,7 @@ class ProductController extends Controller
     
         $product->categories()->attach($categoryIds);
 
-        redirect('/admin');
+        return redirect('/admin/produtos');
     }
 
     /**
@@ -109,6 +108,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product): RedirectResponse
     {
+        $imgUrl = explode("/", $product->thumbnail);
+        Storage::disk('public')->delete('product/' . end($imgUrl));
         $product->delete();
 
         return redirect(route('admin.index'));

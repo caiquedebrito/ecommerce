@@ -2,10 +2,6 @@ import React, { useEffect } from "react";
 
 export default function Content({ data, setSelected, refresh, fetchData }) {
 
-    useEffect(() => {
-        fetchData()
-    }, [refresh])
-
     return (
         <div className="overflow-scroll mx-4 no-scroll border">
             <table className="w-full">
