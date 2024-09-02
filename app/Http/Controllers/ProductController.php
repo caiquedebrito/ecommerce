@@ -47,8 +47,6 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-
-        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
@@ -82,23 +80,60 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(Request $request, string $productId): RedirectResponse
     {
+        $product = Product::where('id', $productId)->first();
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'description' => 'required|string|max:255',
+        if ($request->has('name') && $request->name !== $product->name) {
+          $request->validate([
+            'name' => 'required|string|max:255'
+          ]);
+          $product->name = $request->name;
+        }
+
+        if ($request->has('price') && $request->price !== $product->price) {
+          $request->validate([
+            'price' => 'required|numeric'
+          ]);
+          $product->price = $request->price;
+        }
+
+        if ($request->has('description') && $request->description !== $product->description) {
+          $request->validate([
+            'description' => 'required|string|max:255'
+          ]);
+          $product->description = $request->description;
+        }
+
+        if ($request->has('categories') && sizeof($request->categories) > 0) {
+          $request->validate([
             'categories' => 'required|array',
-            'categories.*' => 'string|max:255|exists:categories,name',
-            'thumbnail' => 'required|image'
-        ]);
-    
-        $categoryNames = $request->categories;
-        $categories = Category::whereIn('name', $categoryNames)->get();
-        $categoryIds = $categories->pluck('id');
-    
-        $product->categories()->sync($categoryIds);
+            'categories.*' => 'string|max:255|exists:categories,name'
+          ]);
+
+          $outdatedCategories = $product->categories;
+          $outdatedCategoryIds = $outdatedCategories->pluck('id');
+          $product->categories()->detach($outdatedCategoryIds);
+
+          $categoryNames = $request->categories;
+          $categories = Category::whereIn('name', $categoryNames)->get();
+          $categoryIds = $categories->pluck('id');
+      
+          $product->categories()->sync($categoryIds);
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            $request->validate([
+                'thumbnail' => 'required|image'
+            ]);
+            $imgUrl = explode("/", $product->thumbnail);
+            Storage::disk('public')->delete('product/' . end($imgUrl));
+
+            $imagePath = $request->file('thumbnail')->store('product', 'public');
+            $product->thumbnail = asset('storage/' . $imagePath);
+        }
+        
+        $product->save();
 
         return redirect(route('admin.index'));
     }
