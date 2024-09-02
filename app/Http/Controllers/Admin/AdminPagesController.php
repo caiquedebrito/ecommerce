@@ -24,9 +24,14 @@ class AdminPagesController extends Controller
     public function product(string $id) {
         $product = Product::where("id", $id)->first();
         $categories = $product->categories;
+        $categories = $categories->map(function (Category $c) {
+            return $c->name;
+        });
+        $allCategories = Category::all();
         return Inertia::render('Admin/Products/Product', [
             'product' => $product,
-            'categories' => $categories
+            'productCategories' => $categories,
+            'allCategories' => $allCategories
         ]);
     }
 
