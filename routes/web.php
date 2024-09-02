@@ -45,7 +45,7 @@ Route::group(['prefix' => 'products', 'namespace' => 'Products'], function () {
     
     Route::middleware('admin.auth')->group(function () {
         Route::post('/store', [ProductController::class, 'store'])->name('products.store');
-        Route::patch('/{product}/update', [ProductController::class, 'update'])->name('products.update');
+        Route::post('/{product}/update', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy');
     });
 });
