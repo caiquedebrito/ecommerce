@@ -7,18 +7,34 @@ import PrimaryButton from '@/Components/PrimaryButton'
 import TextArea from '@/Components/TextArea'
 import TextInput from '@/Components/TextInput'
 import { useForm } from '@inertiajs/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function Product({ product, categories }) {
-  const { delete: destroy } = useForm()
+export default function Product({ product, productCategories, allCategories }) {
+  const [categoriesSet, setCategoriesSet] = useState(productCategories) 
+  const { delete: destroy, post, data, setData } = useForm({
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    categories: categoriesSet,
+    thumbnail: ''
+  })
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    setData('categories', categoriesSet)
+  }, [categoriesSet])
 
   const changeImage = (e) => {
     setImage(URL.createObjectURL(e.target.files[0]))
+    setData('thumbnail', e.target.files[0])
   }
 
   const deleteProduct = () => {
     confirm('Tem certeza que deseja excluir este produto?') && destroy(route('products.destroy', product)) 
+  }
+
+  const saveProduct = () => {
+    post(route('products.update', product.id))
   }
 
   return (
@@ -48,39 +64,37 @@ export default function Product({ product, categories }) {
 
               <div>
                 <InputLabel value="Nome do produto"/>
-                <TextInput type="text" value={product.name}/>
+                <TextInput 
+                  type="text" 
+                  value={data.name}
+                  onChange={(e) => setData('name', e.target.value)}
+                />
               </div>
 
               <div>
                 <InputLabel value="Descrição do produto"/>
-                <TextArea value={product.description} />
+                <TextArea 
+                  value={data.description} 
+                  onChange={(e) => setData('description', e.target.value)}
+                />
               </div>
 
               <div>
                 <InputLabel value="Preço do produto"/>
-                <TextInput value={product.price}/>
+                <TextInput 
+                  value={data.price}
+                  onChange={(e) => setData('price', e.target.value)}
+                />
               </div>
 
               <div>
                 <InputLabel value='Categoria(s)' />
-                <div className='flex flex-wrap gap-2 mt-5'>
-                  {
-                    categories.map((category, index) => {
-                      return (
-                        <CategoryBadge key={index} onClick={() => {}}>{category.name}</CategoryBadge>
-                      )
-                    })
-                  }
-                </div>
-              </div>
-
-              <div>
-
+                <CategoryDropDown categories={allCategories} setCategoriesSet={setCategoriesSet} categoriesSet={categoriesSet}/>
               </div>
 
               <div className='flex gap-2'>
                 <DangerButton value="Excluir produto" onClick={deleteProduct}>Excluir produto</DangerButton>
-                <PrimaryButton value="Salvar alterações">Salvar alterações</PrimaryButton>
+                <PrimaryButton value="Salvar alterações" onClick={saveProduct} type='button'>Salvar alterações</PrimaryButton>
               </div>
             </form>
         </div>
