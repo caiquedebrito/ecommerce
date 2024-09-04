@@ -141,8 +141,9 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(string $productId): RedirectResponse
     {
+        $product = Product::where('id', $productId)->first();
         $imgUrl = explode("/", $product->thumbnail);
         Storage::disk('public')->delete('product/' . end($imgUrl));
         $product->delete();

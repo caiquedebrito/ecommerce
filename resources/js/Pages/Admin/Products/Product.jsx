@@ -30,7 +30,7 @@ export default function Product({ product, productCategories, allCategories }) {
   }
 
   const deleteProduct = () => {
-    confirm('Tem certeza que deseja excluir este produto?') && destroy(route('products.destroy', product)) 
+    confirm('Tem certeza que deseja excluir este produto?') && destroy(route('products.destroy', product.id)) 
   }
 
   const saveProduct = () => {
