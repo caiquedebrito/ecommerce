@@ -52,7 +52,7 @@ class AdminAuthController extends Controller
 
         Auth::login($admin);
 
-        return redirect('/admin');
+        return redirect()->route('admin.products');
     }
 
     public function register()

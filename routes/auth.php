@@ -24,7 +24,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
     Route::middleware('admin.auth')->group(function () {
         Route::get('/', function () {
-            return Inertia::render('Admin/Index');
+            return redirect()->route('admin.products');
         })->name('admin.index');   
         Route::get('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
     });
