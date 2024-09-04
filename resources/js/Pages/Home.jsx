@@ -12,10 +12,7 @@ export default function Home({ auth, products, categories }) {
         <main className="min-h-screen flex flex-col justify-between">
             <Head title="Home" />
             <Header auth={auth} categories={categories}/>
-
-            {/* <Carousel /> */}
-
-            <div className="flex flex-col px-5 gap-5 justify-center">
+            <div className="flex flex-wrap px-5 gap-5 my-10">
                 { products.map((product, index) => <ProductCard key={index} product={product} />) }
                 {
                   // categories.map(category => {
